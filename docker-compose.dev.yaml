@@ -1,0 +1,97 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=auth
+      - MYSQL_USER=auth_user
+      - MYSQL_PASSWORD=Auth123
+    networks:
+      - private
+    volumes:
+      - ./mysql_init:/docker-entrypoint-initdb.d
+
+  auth:
+    build:
+      context: auth/
+      target: development
+    volumes:
+      - ./auth:/usr/src/app
+      - /usr/src/app/node_modules
+    expose:
+      - 3000
+    environment:
+      - MYSQL_DATABASE=auth
+      - MYSQL_USER=auth_user
+      - MYSQL_PASSWORD=Auth123
+      - JWT_SECRET=secret
+    depends_on:
+      - mysql
+    command: npm run dev:serve
+    restart: on-failure
+    networks:
+      - private
+  
+  gateway:
+    build:
+      context: gateway/
+      target: development
+    volumes:
+      - ./gateway:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3050:3050"
+    depends_on:
+      - auth
+      - rabbitmq
+    environment:
+      - DB_CONN_STRING=mongodb://mongo
+      - DB_PRECONVERTED=preconverted
+      - DB_CONVERTED=converted
+    command: npm run dev:serve
+    restart: on-failure
+    networks:
+      - private
+
+  mongo:
+    image: mongo:latest
+    restart: always
+    # ports:
+    #   - "27017:27017"
+    networks:
+      - private
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      # - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - private
+    
+  converter:
+    build:
+      context: converter/
+    restart: always
+    depends_on:
+      - mongo
+      - rabbitmq
+    networks:
+      - private
+    volumes:
+      - ./converter:/usr/src/app
+
+networks:
+  private:
+    driver: bridge
+
+volumes:
+  mysql:
+  mongo:

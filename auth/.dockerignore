@@ -1,0 +1,9 @@
+dist
+init
+node_modules
+Dockerfile
+.dockerignore
+.git
+.gitignore
+docker-compose*
+.idea
