@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 import {ObjectId} from "mongodb";
 import * as mongoDB from "mongodb";
+import {getDB} from "../mongo";
 
 export const downloadFile = async (req: Request, res: Response) => {
     const fid: unknown = req.query.fid
@@ -11,10 +12,7 @@ export const downloadFile = async (req: Request, res: Response) => {
         })
     }
     try {
-        // TODO: resolve issue with mongo connection
-        const client: mongoDB.MongoClient = new mongoDB.MongoClient(process.env.DB_CONN_STRING!);
-
-        await client.connect();
+        const client = getDB();
 
         const db = client.db("converted");
         const bucket = new mongoDB.GridFSBucket(db);
