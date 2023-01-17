@@ -8,7 +8,7 @@ import Private from "./components/Private";
 const App = () => {
     return (
         <Routes>
-            <Route path={'/secure'} element={
+            <Route path={'/'} element={
                 <RequireAuth loginPath={'/login'}>
                     <Private />
                 </RequireAuth>
