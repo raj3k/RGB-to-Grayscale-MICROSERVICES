@@ -6,7 +6,6 @@ import { AuthProvider } from 'react-auth-kit';
 import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-    <React.StrictMode>
         <AuthProvider authType = {'cookie'}
                       authName={'_auth'}
                       cookieDomain={window.location.hostname}
@@ -15,5 +14,4 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                 <App />
             </BrowserRouter>
         </AuthProvider>
-    </React.StrictMode>
 )
