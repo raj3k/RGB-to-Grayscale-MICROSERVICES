@@ -1,7 +1,6 @@
 import {Request, Response} from "express";
-import {AxiosError} from "axios";
+import axios, {AxiosError, AxiosResponse} from "axios";
 import {Token} from "../types/token.type";
-import {loginService} from "../services/login.service";
 
 export const login = async (req: Request, res: Response) => {
     const {email, password} = req.body;
@@ -19,8 +18,11 @@ export const login = async (req: Request, res: Response) => {
     }
 
     try {
-
-        const token: Token | AxiosError = await loginService(userCredentials);
+        const response: AxiosResponse = await axios.post("http://auth:3000/api/auth/login", {
+            email: userCredentials.email,
+            password: userCredentials.password
+        });
+        const token: Token = response.data.token;
 
         res.json({
             status: "success",
