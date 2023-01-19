@@ -1,9 +1,10 @@
 import { ChangeEvent, useState } from 'react';
 import axios, {AxiosResponse} from 'axios';
-import {useAuthHeader} from 'react-auth-kit'
+import {useAuthHeader} from 'react-auth-kit';
 
-const Private = () => {
+const Private = ({images}: any) => {
     const [file, setFile] = useState<File>();
+    const [image, setImage] = useState();
     const authHeader = useAuthHeader();
     const token: string = authHeader();
 
@@ -28,6 +29,24 @@ const Private = () => {
             .catch((err) => console.error(err));
 
     }
+
+    // TODO: check if can be better resolved
+    // const handleDownload = () => {
+    //     axios.get('http://gateway/api/gateway/download?fid=63c7cf09e92fad9527338043', {
+    //         headers: {
+    //             'Authorization': token,
+    //             responseType: 'blob'
+    //         }
+    //     })
+    //     .then((res) => {
+    //         setImage(res.data)
+    //     })
+    // }
+
+    const listImages = images.map((image: any) => <li><a href={image} download>Download Image</a></li>);
+
+
+
 
     return (
         <>
@@ -68,7 +87,9 @@ const Private = () => {
                 </div>
                 <button onClick={handleUploadClick}>Upload</button>
             </div>
-
+            <ul>
+                {listImages}
+            </ul>
         </>
     );
 };

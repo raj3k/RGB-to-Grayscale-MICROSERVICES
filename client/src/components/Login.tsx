@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { useSignIn } from 'react-auth-kit';
 import { useNavigate } from 'react-router-dom';
@@ -8,13 +8,15 @@ type AuthResponse = {
     token: string
 }
 
+
 export default function Login() {
     const signIn = useSignIn();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({email: "", password: ""})
+
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await axios.post('http://localhost:3050/api/gateway/login/', formData)
+        await axios.post('http://localhost:3050/api/gateway/login', formData)
             .then((res: AxiosResponse<AuthResponse>) => {
                 if (res.status === 200) {
                     if (signIn(
@@ -25,7 +27,7 @@ export default function Login() {
                             authState: { email: formData.email }
                         }
                     )) {
-                        navigate('/secure');
+                        navigate('/');
                     }
                 }
             })

@@ -4,20 +4,31 @@ import { RequireAuth } from "react-auth-kit";
 import './App.css';
 import Login from "./components/Login";
 import Private from "./components/Private";
-import { Socket, io } from "socket.io-client";
 
 const App = () => {
-    const [socket, setSocket] = useState<null | Socket>(null);
+    const [ images, setImages ] = useState([]);
+    const [ listening, setListening ] = useState(false);
+  
+    useEffect( () => {
+      if (!listening) {
+        const events = new EventSource('http://localhost:3000/events');
+  
+        events.onmessage = (event) => {
+          const parsedData = JSON.parse(event.data);
+  
+          setImages((images) => images.concat(parsedData));
+        };
+  
+        setListening(true);
+      }
+    }, [listening, images]);
 
-    useEffect(() => {
-        setSocket(io("http://localhost:8080"));
-    }, []);
 
     return (
         <Routes>
             <Route path={'/'} element={
                 <RequireAuth loginPath={'/login'}>
-                    <Private />
+                    <Private images={images} />
                 </RequireAuth>
             } />
             <Route path={"/login"} element={<Login />}></Route>
