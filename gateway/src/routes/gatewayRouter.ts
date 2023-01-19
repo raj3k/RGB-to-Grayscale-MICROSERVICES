@@ -10,6 +10,6 @@ const router: Router = express.Router();
 
 router.post("/login", login);
 router.post("/upload", authenticated, uploadFile);
-router.get("/download",authenticated, downloadFile);
+router.get("/download", downloadFile);
 
 export default router;
