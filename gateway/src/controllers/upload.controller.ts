@@ -29,7 +29,6 @@ export const uploadFile = async (req: Request, res: Response) => {
             const conn: amqp.Connection = await amqp.connect('amqp://rabbitmq');
 
             const channel = await conn.createChannel();
-            // await channel.assertQueue(queue)
 
             const msg = {
                 // TODO: add if to check if req.file exists
