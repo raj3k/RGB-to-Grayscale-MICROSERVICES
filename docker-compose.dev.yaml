@@ -44,6 +44,8 @@ services:
       - /usr/src/app/node_modules
     ports:
       - "3050:3050"
+#    expose:
+#      - 3050
     depends_on:
       - auth
       - rabbitmq
@@ -68,7 +70,7 @@ services:
     image: rabbitmq:3-management-alpine
     container_name: 'rabbitmq'
     ports:
-      # - "5672:5672"
+#      - "5672:5672"
       - "15672:15672"
     volumes:
       - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
@@ -87,6 +89,41 @@ services:
       - private
     volumes:
       - ./converter:/usr/src/app
+
+
+  notification:
+    build:
+      context: notification/
+      target: development
+    restart: always
+    depends_on:
+      - rabbitmq
+    networks:
+      - private
+    command: npm run dev:serve
+    volumes:
+      - ./notification:/usr/src/app
+      - /usr/src/app/node_modules
+#    expose:
+#      - 3001
+    ports:
+      - "3000:3000"
+
+#  client:
+#    build:
+#      context: client/
+#    restart: always
+#    depends_on:
+#      - gateway
+#      - notification
+#    networks:
+#      - private
+#    volumes:
+#      - ./client:/usr/src/app
+#      - /usr/src/app/node_modules
+#    ports:
+#      - "5173:5173"
+
 
 networks:
   private:
