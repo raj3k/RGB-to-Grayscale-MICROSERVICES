@@ -30,7 +30,7 @@ async function connect() {
   }
 }
 
-const PORT = 3000;
+const PORT = 3001;
 
 let clients: any = [];
 // TODO: if notification service will restart this will be empty
@@ -44,17 +44,16 @@ const sendEventsToAll = (newMessage: any) => {
 const addConvertedImgURL = (newMessage: string) => {
     const m = JSON.parse(newMessage);
     const converted_fid = m['converted_fid'];
-    // TODO: correct URL, maybe use env
-    const imageURL = `http://localhost:3050/api/gateway/download?fid=${converted_fid}`;
-    images.push(imageURL);
-    return sendEventsToAll(imageURL);
+    images.push(converted_fid);
+    return sendEventsToAll(converted_fid);
 }
 
 const eventsHandler = (request: Request, response: Response, next: NextFunction) => {
     const headers = {
-      'Content-Type': 'text/event-stream',
-      'Connection': 'keep-alive',
-      'Cache-Control': 'no-cache'
+        'Content-Type': 'text/event-stream',
+        'Connection': 'keep-alive',
+        'X-Accel-Buffering': 'no',
+        'Cache-Control': 'no-cache',
     };
     response.writeHead(200, headers);
   

@@ -19,7 +19,7 @@ const Private = ({images}: any) => {
             return;
         }
 
-        axios.post('http://localhost:3050/api/gateway/upload/', {image: file}, {
+        axios.post('/api/gateway/upload/', {image: file}, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': token
@@ -42,8 +42,8 @@ const Private = ({images}: any) => {
     //         setImage(res.data)
     //     })
     // }
-
-    const listImages = images.map((image: any) => <li><a href={image} download>Download Image</a></li>);
+    console.log(images)
+    const listImages = images.map((image: any) => <li key={image}><a href={`/api/gateway/download?fid=${image}`} download={image}>Download Image</a></li>);
 
 
 

@@ -6,19 +6,17 @@ import Login from "./components/Login";
 import Private from "./components/Private";
 
 const App = () => {
-    const [ images, setImages ] = useState([]);
+    const [ images, setImages ] = useState<string[]>([]);
     const [ listening, setListening ] = useState(false);
   
     useEffect( () => {
       if (!listening) {
-        const events = new EventSource('http://localhost:3000/events');
-  
+        const events = new EventSource('/events');
+
         events.onmessage = (event) => {
-          const parsedData = JSON.parse(event.data);
-  
-          setImages((images) => images.concat(parsedData));
+            const parsedData = JSON.parse(event.data);
+            setImages((images) => images.concat(parsedData));
         };
-  
         setListening(true);
       }
     }, [listening, images]);

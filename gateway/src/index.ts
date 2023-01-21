@@ -3,6 +3,7 @@ dotenv.config();
 
 import express, {Application} from "express";
 import cors from "cors";
+import morgan from "morgan";
 import gatewayRouter from "./routes/gatewayRouter";
 import { connectToDatabase } from "./mongo";
 
@@ -12,10 +13,11 @@ const port = process.env.PORT || 3050;
 
 app.use(express.json());
 app.use(cors());
+app.use(morgan('dev'));
 
 connectToDatabase()
     .then(() => {
-        app.use("/api/gateway", gatewayRouter);
+        app.use("/gateway", gatewayRouter);
         app.listen(port, () => {
             console.log(`Gateway service is listening on port ${port}`);
         });

@@ -16,7 +16,7 @@ export default function Login() {
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await axios.post('http://localhost:3050/api/gateway/login', formData)
+        await axios.post('/api/gateway/login/', formData)
             .then((res: AxiosResponse<AuthResponse>) => {
                 if (res.status === 200) {
                     if (signIn(
