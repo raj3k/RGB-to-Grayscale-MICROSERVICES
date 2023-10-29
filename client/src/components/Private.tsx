@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import axios, {AxiosResponse} from 'axios';
 import {useAuthHeader} from 'react-auth-kit';
+import Navbar from './Navbar';
 
 const Private = ({images}: any) => {
     const [file, setFile] = useState<File>();
@@ -50,6 +51,7 @@ const Private = ({images}: any) => {
 
     return (
         <>
+        <Navbar/>
             <div>
                 <label className="block text-sm font-medium text-gray-700">Upload RGB Image</label>
                 <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
