@@ -9,7 +9,7 @@ services:
     build:
       context: ./nginx
     ports:
-      - "4050:80"
+      - "80:80"
     networks:
       - private
     
@@ -36,6 +36,7 @@ services:
     # expose:
     #   - 3000
     environment:
+      - MYSQL_IP=mysql
       - MYSQL_DATABASE=auth
       - MYSQL_USER=auth_user
       - MYSQL_PASSWORD=Auth123
@@ -62,7 +63,7 @@ services:
       - auth
       - rabbitmq
     environment:
-      - DB_CONN_STRING=mongodb://mongo
+      - DB_CONN_STRING=mongo
       - DB_PRECONVERTED=preconverted
       - DB_CONVERTED=converted
     command: npm run dev:serve
@@ -75,6 +76,9 @@ services:
     restart: always
     # ports:
     #   - "27017:27017"
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=mongo
+    #   - MONGO_INITDB_ROOT_PASSWORD=password
     networks:
       - private
 

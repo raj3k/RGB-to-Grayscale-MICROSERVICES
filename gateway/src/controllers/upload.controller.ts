@@ -3,7 +3,7 @@ import multer from "multer";
 import {GridFsStorage} from 'multer-gridfs-storage';
 import amqp from "amqplib"
 
-const storage = new GridFsStorage({url: `${process.env.DB_CONN_STRING}/preconverted`})
+const storage = new GridFsStorage({url: `mongodb://${process.env.DB_CONN_STRING}/preconverted`})
 
 const upload = multer({storage}).single('image')
 

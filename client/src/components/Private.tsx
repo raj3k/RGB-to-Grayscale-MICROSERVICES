@@ -43,18 +43,13 @@ const Private = ({images}: any) => {
     //         setImage(res.data)
     //     })
     // }
-    console.log(images)
-    const listImages = images.map((image: any) => <li key={image}><a href={`/api/gateway/download?fid=${image}`} download={image}>Download Image</a></li>);
-
-
-
 
     return (
         <>
-        <Navbar/>
-            <div>
+        <Navbar images={images}/>
+            <div className="flex flex-col justify-center items-center w-full h-auto">
                 <label className="block text-sm font-medium text-gray-700">Upload RGB Image</label>
-                <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
+                <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6 w-1/2">
                     {!file ?
                         <div className="space-y-1 text-center">
                             <svg
@@ -81,17 +76,16 @@ const Private = ({images}: any) => {
                                 </label>
                                 <p className="pl-1">or drag and drop</p>
                             </div>
-                            <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                            <p className="text-xs text-gray-500">PNG, JPG, GIF up to 8MB</p>
                         </div>
                         :
                         <div>{file && `${file.name} - ${file.type}`}</div>
                     }
                 </div>
-                <button onClick={handleUploadClick}>Upload</button>
+                <div className="flex justify-center items-center mt-2">
+                    <button onClick={handleUploadClick} className="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Upload</button>
+                </div>
             </div>
-            <ul>
-                {listImages}
-            </ul>
         </>
     );
 };

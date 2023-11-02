@@ -5,7 +5,7 @@ let dbConnection: mongoDB.MongoClient;
 export async function connectToDatabase () {
     dotenv.config();
 
-    const client: mongoDB.MongoClient = new mongoDB.MongoClient(process.env.DB_CONN_STRING!);
+    const client: mongoDB.MongoClient = new mongoDB.MongoClient(`mongodb://${process.env.DB_CONN_STRING}`);
 
     dbConnection = await client.connect();
 
